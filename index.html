@@ -184,14 +184,31 @@ function GetColour(v,vmin,vmax)
 var numPixels=352*288;
 // this part seems slow :( 
 for(var i = 0; i < numPixels; i++) {
-    var col = GetColour(z_arr[i], 0, 10000);
-    var r = col[0];
-    var g = col[1];
-    var b = col[2];
-    imageData.data[4*i] = r*255;//(z_arr[i])/255;
-    imageData.data[4*i+1] = g*255;//(z_arr[i])/255;
-    imageData.data[4*i+2] = b*255;//(z_arr[i])/255;
-    imageData.data[4*i+3] = 255;
+    if (conf[i] === 0)
+    {
+        var col = GetColour(z_arr[i], 0, 10000);
+        var r = col[0];
+        var g = col[1];
+        var b = col[2];
+        imageData.data[4*i] = r*255;//(z_arr[i])/255;
+        imageData.data[4*i+1] = g*255;//(z_arr[i])/255;
+        imageData.data[4*i+2] = b*255;//(z_arr[i])/255;
+        imageData.data[4*i+3] = 255;
+    }
+    else if (conf[i] == 2)
+    {
+        imageData.data[4*i] = 255;
+        imageData.data[4*i+1] = 255;
+        imageData.data[4*i+2] = 255;
+        imageData.data[4*i+3] = 255;
+    }
+    else if (conf[i] == 1 || conf[i] == 3)
+    {
+        imageData.data[4*i] = 0;
+        imageData.data[4*i+1] = 0;
+        imageData.data[4*i+2] = 0;
+        imageData.data[4*i+3] = 255;
+    }
 }
 
 ctx.putImageData(imageData, 0, 0);
