@@ -3,13 +3,14 @@
 		<title>Simple three.js app</title>
 		<style>
 			body { margin: 0; }
-			canvas { width: 100%; height: 100% }
+			/*canvas { width: 100%; height: 100% }*/
 		</style>
     <script src="three.min.js"></script>
     <script src="TrackballControls.js"></script>
     <script src="LUT.js"></script>
 	</head>
 	<body>
+		<canvas id="cvs" width="352" height="288"></canvas>
 		<script>
       
 			var renderer = new THREE.WebGLRenderer();
@@ -50,6 +51,11 @@
       
       var cubesInit = false;
 
+      var rot_angle = 0;
+var canvas = document.getElementById("cvs");
+var ctx = canvas.getContext('2d');
+
+
       var ws=new WebSocket("ws://"+location.host+":8080/stream");
       ws.binaryType = 'arraybuffer';
 
@@ -85,6 +91,24 @@
         var lutColors = points.geometry.attributes.color.array;
         var posIndex = 0;
         
+
+	rot_angle = rot_angle + 0.1;
+	if (rot_angle > 2*3.14)
+	{
+           rot_angle = 0;
+	}
+
+	var x=0.0;
+	var y=1.0;
+	var x_new = x*Math.cos(rot_angle)-y*Math.sin(rot_angle);
+	var y_new = x*Math.sin(rot_angle)+y*Math.cos(rot_angle);
+	console.log(rot_angle + "/" + x_new + "/" + y_new);
+
+	
+        //camera.up = new THREE.Vector3(0,x_new,y_new*10);
+        camera.up = new THREE.Vector3(x_new,y_new,0);
+	
+
         for( var index = 0; index < dataSize; index++ ) 
 	{
           
@@ -124,6 +148,53 @@
 	controls.update();
         renderer.render( scene, camera );
 
+function GetColour(v,vmin,vmax)
+{
+   var r = 1.0;
+   var g = 1.0;
+   var b = 1.0;
+   var dv;
+
+   if (v < vmin)
+      v = vmin;
+   if (v > vmax)
+      v = vmax;
+   dv = vmax - vmin;
+
+   if (v < (vmin + 0.25 * dv)) {
+      r = 0;
+      g = 4 * (v - vmin) / dv;
+   } else if (v < (vmin + 0.5 * dv)) {
+      r = 0;
+      b = 1 + 4 * (vmin + 0.25 * dv - v) / dv;
+   } else if (v < (vmin + 0.75 * dv)) {
+      r = 4 * (v - vmin - 0.5 * dv) / dv;
+      b = 0;
+   } else {
+      g = 1 + 4 * (vmin + 0.75 * dv - v) / dv;
+      b = 0;
+   }
+
+   return [r, g, b];
+}
+
+	// imageData is Uint8ClampedArray
+        var imageData = ctx.getImageData(0, 0, 352,288);
+var numPixels=352*288;
+// this part seems slow :( 
+for(var i = 0; i < numPixels; i++) {
+    var col = GetColour(z_arr[i], 0, 10000);
+    var r = col[0];
+    var g = col[1];
+    var b = col[2];
+    imageData.data[4*i] = r*255;//(z_arr[i])/255;
+    imageData.data[4*i+1] = g*255;//(z_arr[i])/255;
+    imageData.data[4*i+2] = b*255;//(z_arr[i])/255;
+    imageData.data[4*i+3] = 255;
+}
+
+ctx.putImageData(imageData, 0, 0);
+
       }
       
       function setupCamera() {
@@ -132,7 +203,7 @@
         camera.position.y = 0;
         camera.position.z = 30000;
         
-        // camera.up = new THREE.Vector3(0,0,1);
+        camera.up = new THREE.Vector3(0,-1,1);
         camera.lookAt(new THREE.Vector3(0,0,1));
 
 	controls = new THREE.TrackballControls( camera, renderer.domElement );
@@ -144,7 +215,6 @@
         console.log( 'Starting' );
         startTime = new Date().getTime();
         
-        //requestAnimationFrame(animate);
         
         var delay = (new Date().getTime() - startTime)
         console.log( 'After request animation?: ' + delay );
