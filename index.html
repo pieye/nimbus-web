@@ -64,6 +64,7 @@ var ctx = canvas.getContext('2d');
 	      offset = 2*288*352;
 	      length = 288*352;
               var startTime = new Date().getTime();
+	      ampl_arr = new Uint16Array(evt.data, 0, length);
 	      dist_arr = new Uint16Array(evt.data, offset, length);
 	      offset += 2*288*352;
 	      conf = new Uint8Array(evt.data, offset, length);
