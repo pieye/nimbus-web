@@ -1,7 +1,17 @@
 
 var renderer = new THREE.WebGLRenderer();
-document.getElementById( 'container3D' ).appendChild( renderer.domElement );
+
+NB3D_docElement = document.getElementById( 'container3D' );
+NB3D_docElement.appendChild( renderer.domElement );
+
 var scene = new THREE.Scene();
+var numPixels = 352 * 288;
+var NB3D_mouseDown = false;
+
+var NB3D_lastXPos = 0;
+var NB3D_lastYPos = 0;
+
+var viewCenter = new THREE.Vector3( 0, 0, 10000 );
 
 var material = new THREE.PointsMaterial( {
   side: THREE.DoubleSide,
@@ -19,6 +29,59 @@ var lutColors = new Float32Array( 101376 * 3 );
 geometry.addAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
 geometry.addAttribute( 'color', new THREE.BufferAttribute( lutColors , 3 ) );
 geometry.setDrawRange( 0, numPixels );
+
+NB3D_docElement.onmousedown = function( eve ) {
+  NB3D_mouseDown = true;
+  NB3D_lastXPos = eve.clientX;
+  NB3D_lastYPos = eve.clientY;
+};
+
+NB3D_docElement.onmousemove = function( eve ) {
+  if( !NB3D_mouseDown ) return;
+  
+  var x = eve.clientX - NB3D_lastXPos;
+  NB3D_lastXPos = eve.clientX;
+  
+  var y = eve.clientY - NB3D_lastYPos;
+  NB3D_lastYPos = eve.clientY;
+  
+  rotateCamera( x / 100, y / 100 );
+};
+
+NB3D_docElement.onmouseup = function() {
+  NB3D_mouseDown = false;
+};
+
+NB3D_docElement.onwheel = function( eve ) {
+  eve.preventDefault();
+  console.log( eve.deltaY );
+  var lookAtToCam = new THREE.Vector3().subVectors( camera.position, viewCenter );
+  lookAtToCam.setLength( eve.deltaY * 5 );
+  var newCamPos = new THREE.Vector3().addVectors( lookAtToCam, camera.position );
+  viewCenter = new THREE.Vector3().addVectors( lookAtToCam, viewCenter );
+  
+  camera.position.x = newCamPos.x;
+  camera.position.y = newCamPos.y;
+  camera.position.z = newCamPos.z;
+  camera.lookAt( viewCenter );
+}
+
+function rotateCamera( angleHorizontal, angleVertical ) {
+  var lookAtToCam = new THREE.Vector3().subVectors( camera.position, viewCenter );
+  var rotAxis = camera.up;
+  lookAtToCam.applyAxisAngle( rotAxis, -angleHorizontal );
+  
+  var crossAxis = new THREE.Vector3().crossVectors( lookAtToCam, camera.up );
+  crossAxis.normalize();
+  lookAtToCam.applyAxisAngle( crossAxis, angleVertical );
+  
+  var newCamPos = new THREE.Vector3().addVectors( lookAtToCam, viewCenter );
+  
+  camera.position.x = newCamPos.x;
+  camera.position.y = newCamPos.y;
+  camera.position.z = newCamPos.z;
+  camera.lookAt( viewCenter );
+}
 
 function render3Dscene(x_arr, y_arr, z_arr, dist_arr, conf) {
   var positions = points.geometry.attributes.position.array;
@@ -55,13 +118,12 @@ function render3Dscene(x_arr, y_arr, z_arr, dist_arr, conf) {
   renderer.render( scene, camera );
 }
 
-
 function setupCamera() {
-  camera = new THREE.PerspectiveCamera( 45, window.innerWidth/window.innerHeight, 0.1, 100000 );
+  camera = new THREE.PerspectiveCamera( 62, window.innerWidth/window.innerHeight, 0.1, 100000 );
   camera.position.x = 0;
   camera.position.y = 0;
-  camera.position.z = -1000;
+  camera.position.z = 0;
 
-  camera.up = new THREE.Vector3(0,1,0);
-  camera.lookAt(new THREE.Vector3(0,0,1));
+  camera.up = new THREE.Vector3( 0, 1, 0 );
+  camera.lookAt( new THREE.Vector3( 0, 0, 1 ) );
 }
