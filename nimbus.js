@@ -26,11 +26,21 @@ dataStream.onmessage=function(evt){
   offset += 2 * numPixels;
   conf = new Uint8Array(evt.data, offset, numPixels);
   offset += numPixels;
-  x_arr = new Int16Array(evt.data, offset, numPixels);
-  offset += 2 * numPixels;
-  y_arr = new Int16Array(evt.data, offset, numPixels);
-  offset += 2 * numPixels;
-  z_arr = new Int16Array(evt.data, offset, numPixels);
+
+  var t0 = performance.now();
+
+  x_arr = new Int16Array(numPixels);
+  y_arr = new Int16Array(numPixels);
+  z_arr = new Int16Array(numPixels);
+
+  for (var i = 0; i < numPixels; i++) {
+     x_arr[i] = dist_arr[i] * xMultiMatrix[i];
+     y_arr[i] = dist_arr[i] * yMultiMatrix[i];
+     z_arr[i] = dist_arr[i] * zMultiMatrix[i];
+  }
+
+  var t1 = performance.now();
+  console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
 
   render3Dscene( x_arr, y_arr, z_arr, dist_arr, conf );
   render2Dscene( z_arr, conf, dist_arr );
