@@ -24,6 +24,8 @@ var dataStream = new WebSocket("ws://"+location.host+":8080/stream");
 // var dataStream = new WebSocket("ws://"+"192.168.0.69"+":8080/stream");
 dataStream.binaryType = 'arraybuffer';
 dataStream.onmessage=function(evt){
+  if (xMultiMatrix === null || yMultiMatrix === null || zMultiMatrix === null)
+		return;
   var data = evt.data;
   // distMax = 0;
   // distMin = 65432;
@@ -42,9 +44,13 @@ dataStream.onmessage=function(evt){
   z_arr = new Int16Array(numPixels);
 
   for (var i = 0; i < numPixels; i++) {
-     x_arr[i] = dist_arr[i] * xMultiMatrix[i];
-     y_arr[i] = dist_arr[i] * yMultiMatrix[i];
-     z_arr[i] = dist_arr[i] * zMultiMatrix[i];
+     var temp;
+     temp = dist_arr[i] * xMultiMatrix[i];
+     x_arr[i] = (temp >> 16);
+     temp = dist_arr[i] * yMultiMatrix[i];
+     y_arr[i] = (temp >> 16);
+     temp = dist_arr[i] * zMultiMatrix[i];
+     z_arr[i] = (temp >> 16);
   }
 
   var t1 = performance.now();
@@ -55,35 +61,36 @@ dataStream.onmessage=function(evt){
 };
 
 function getMultiMatrix() {
-  var oReq = new XMLHttpRequest();
-  oReq.open( 'GET', '/ex.arr', true );
-  oReq.responseType = "arraybuffer";
+  var oReqX = new XMLHttpRequest();
+  oReqX.open( 'GET', '/ex.arr', true );
+  oReqX.responseType = "arraybuffer";
 
-  oReq.onload = function (oEvent) {
-    var arrayBuffer = oReq.response; // Note: not oReq.responseText
+  oReqX.onload = function (oEvent) {
+    var arrayBuffer = oReqX.response; // Note: not oReq.responseText
+	  console.log(arrayBuffer);
     if ( arrayBuffer ) { xMultiMatrix = new Int16Array( arrayBuffer ); }
   };
-  oReq.send( null );
+  oReqX.send( null );
   
-  var oReq = new XMLHttpRequest();
-  oReq.open( 'GET', '/ey.arr', true );
-  oReq.responseType = "arraybuffer";
+  var oReqY = new XMLHttpRequest();
+  oReqY.open( 'GET', '/ey.arr', true );
+  oReqY.responseType = "arraybuffer";
 
-  oReq.onload = function (oEvent) {
-    var arrayBuffer = oReq.response; // Note: not oReq.responseText
+  oReqY.onload = function (oEvent) {
+    var arrayBuffer = oReqY.response; // Note: not oReq.responseText
     if ( arrayBuffer ) { yMultiMatrix = new Int16Array( arrayBuffer ); }
   };
-  oReq.send( null );
+  oReqY.send( null );
   
-  var oReq = new XMLHttpRequest();
-  oReq.open( 'GET', '/ez.arr', true );
-  oReq.responseType = "arraybuffer";
+  var oReqZ = new XMLHttpRequest();
+  oReqZ.open( 'GET', '/ez.arr', true );
+  oReqZ.responseType = "arraybuffer";
 
-  oReq.onload = function (oEvent) {
-    var arrayBuffer = oReq.response; // Note: not oReq.responseText
+  oReqZ.onload = function (oEvent) {
+    var arrayBuffer = oReqZ.response; // Note: not oReq.responseText
     if ( arrayBuffer ) { zMultiMatrix = new Int16Array( arrayBuffer ); }
   };
-  oReq.send( null );
+  oReqZ.send( null );
 }
 
 function getColor( v )
