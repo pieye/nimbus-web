@@ -10,7 +10,15 @@ var numPixels = 352 * 288;
 var distMax = 0;
 var distMin = 65432;
 
+var xMultiMatrix = null;
+var yMultiMatrix = null;
+var zMultiMatrix = null;
+
 setupCamera();
+
+document.addEventListener("DOMContentLoaded", function(event) {
+  getMultiMatrix();
+});
 
 var dataStream = new WebSocket("ws://"+location.host+":8080/stream");
 // var dataStream = new WebSocket("ws://"+"192.168.0.69"+":8080/stream");
@@ -45,6 +53,38 @@ dataStream.onmessage=function(evt){
   render3Dscene( x_arr, y_arr, z_arr, dist_arr, conf );
   render2Dscene( z_arr, conf, dist_arr );
 };
+
+function getMultiMatrix() {
+  var oReq = new XMLHttpRequest();
+  oReq.open( 'GET', '/ex.arr', true );
+  oReq.responseType = "arraybuffer";
+
+  oReq.onload = function (oEvent) {
+    var arrayBuffer = oReq.response; // Note: not oReq.responseText
+    if ( arrayBuffer ) { xMultiMatrix = new Int16Array( arrayBuffer ); }
+  };
+  oReq.send( null );
+  
+  var oReq = new XMLHttpRequest();
+  oReq.open( 'GET', '/ey.arr', true );
+  oReq.responseType = "arraybuffer";
+
+  oReq.onload = function (oEvent) {
+    var arrayBuffer = oReq.response; // Note: not oReq.responseText
+    if ( arrayBuffer ) { yMultiMatrix = new Int16Array( arrayBuffer ); }
+  };
+  oReq.send( null );
+  
+  var oReq = new XMLHttpRequest();
+  oReq.open( 'GET', '/ez.arr', true );
+  oReq.responseType = "arraybuffer";
+
+  oReq.onload = function (oEvent) {
+    var arrayBuffer = oReq.response; // Note: not oReq.responseText
+    if ( arrayBuffer ) { zMultiMatrix = new Int16Array( arrayBuffer ); }
+  };
+  oReq.send( null );
+}
 
 function getColor( v )
 {
