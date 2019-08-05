@@ -1,0 +1,49 @@
+* {
+  color: #32afd7;
+  font-family: sans-serif;
+}
+a {
+  color: #377BB5;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+body {
+  margin: 0;
+  text-align: center;
+}
+
+canvas {
+  height: 288px;
+  width: 352px;
+  max-width: 100%;
+}
+
+div {
+  display: inline-block;
+  margin: 0 auto;
+}
+
+h1{
+  margin-top: 4%;
+  margin-bottom: 2%;
+}
+
+table {
+  margin: 3rem auto;
+}
+
+td {
+  border-bottom: 1px solid #377BB5;
+  padding: 0.8rem 0.3rem;
+}
+
+td:first-child {
+  text-align: right;
+}
+
+tr:last-child td {
+  border-bottom: none;  
+}
