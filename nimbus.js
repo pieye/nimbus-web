@@ -1,3 +1,6 @@
+import { NimbusRPC } from './nimbusRPC.js';
+import { Nimbus3DRender } from './nimbus_3D.js';
+import { render2Dscene } from './nimbus_2D.js';
 
 // # Variable declarations
 
@@ -14,34 +17,36 @@ var xMultiMatrix = null;
 var yMultiMatrix = null;
 var zMultiMatrix = null;
 
-setupCamera();
+var NB3D_docElement = document.getElementById( 'container3D' );
+var n3DRender = new Nimbus3DRender(NB3D_docElement);
 
 document.addEventListener("DOMContentLoaded", function(event) {
   getMultiMatrix();
 });
 
 var dataStream = new WebSocket("ws://"+location.host+":8080/stream");
-// var dataStream = new WebSocket("ws://"+"192.168.0.69"+":8080/stream");
 dataStream.binaryType = 'arraybuffer';
 dataStream.onmessage=function(evt){
   if (xMultiMatrix === null || yMultiMatrix === null || zMultiMatrix === null)
-		return;
+        return;
   var data = evt.data;
+  var plotMin = distMin;
+  var plotMax = distMax;
   // distMax = 0;
   // distMin = 65432;
 
-  offset = 2 * numPixels;
-  ampl_arr = new Uint16Array(evt.data, 0, numPixels);
-  dist_arr = new Uint16Array(evt.data, offset, numPixels);
+  var offset = 2 * numPixels;
+  var ampl_arr = new Uint16Array(evt.data, 0, numPixels);
+  var dist_arr = new Uint16Array(evt.data, offset, numPixels);
   offset += 2 * numPixels;
-  conf = new Uint8Array(evt.data, offset, numPixels);
+  var conf = new Uint8Array(evt.data, offset, numPixels);
   offset += numPixels;
 
   var t0 = performance.now();
 
-  x_arr = new Int16Array(numPixels);
-  y_arr = new Int16Array(numPixels);
-  z_arr = new Int16Array(numPixels);
+  var x_arr = new Int16Array(numPixels);
+  var y_arr = new Int16Array(numPixels);
+  var z_arr = new Int16Array(numPixels);
 
   for (var i = 0; i < numPixels; i++) {
      var temp;
@@ -54,76 +59,35 @@ dataStream.onmessage=function(evt){
   }
 
   var t1 = performance.now();
-  console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
+  //console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
 
-  render3Dscene( x_arr, y_arr, z_arr, dist_arr, conf );
-  render2Dscene( z_arr, conf, dist_arr );
+  distMin, distMax = n3DRender.render3Dscene( x_arr, y_arr, z_arr, dist_arr, conf, plotMin, plotMax );
+  render2Dscene( z_arr, conf, dist_arr, plotMin, plotMax );
 };
 
 function getMultiMatrix() {
-  var oReqX = new XMLHttpRequest();
-  oReqX.open( 'GET', '/ex.arr', true );
-  oReqX.responseType = "arraybuffer";
+    var n = new NimbusRPC(location.host);
+    n.getUnitXVector().then(
+        function(val) {
+            xMultiMatrix=val;
+        },
+        function(status) {
+            console.log(status);
+        });
 
-  oReqX.onload = function (oEvent) {
-    var arrayBuffer = oReqX.response; // Note: not oReq.responseText
-	  console.log(arrayBuffer);
-    if ( arrayBuffer ) { xMultiMatrix = new Int16Array( arrayBuffer ); }
-  };
-  oReqX.send( null );
-  
-  var oReqY = new XMLHttpRequest();
-  oReqY.open( 'GET', '/ey.arr', true );
-  oReqY.responseType = "arraybuffer";
+    n.getUnitYVector().then(
+        function(val) {
+            yMultiMatrix=val;
+        },
+        function(status) {
+            console.log(status);
+        });
 
-  oReqY.onload = function (oEvent) {
-    var arrayBuffer = oReqY.response; // Note: not oReq.responseText
-    if ( arrayBuffer ) { yMultiMatrix = new Int16Array( arrayBuffer ); }
-  };
-  oReqY.send( null );
-  
-  var oReqZ = new XMLHttpRequest();
-  oReqZ.open( 'GET', '/ez.arr', true );
-  oReqZ.responseType = "arraybuffer";
-
-  oReqZ.onload = function (oEvent) {
-    var arrayBuffer = oReqZ.response; // Note: not oReq.responseText
-    if ( arrayBuffer ) { zMultiMatrix = new Int16Array( arrayBuffer ); }
-  };
-  oReqZ.send( null );
-}
-
-function getColor( v )
-{
-  var r = 1.0;
-  var g = 1.0;
-  var b = 1.0;
-  var dv;
-
-  // console.log( "distMin?: " + distMin + ", distMax?: " + distMax );
-
-  var vmin = distMin;
-  var vmax = distMax;
-
-  if (v < vmin)
-  v = vmin;
-  if (v > vmax)
-  v = vmax;
-  dv = vmax - vmin;
-
-  if (v < (vmin + 0.25 * dv)) {
-    r = 0;
-    g = 4 * (v - vmin) / dv;
-  } else if (v < (vmin + 0.5 * dv)) {
-    r = 0;
-    b = 1 + 4 * (vmin + 0.25 * dv - v) / dv;
-  } else if (v < (vmin + 0.75 * dv)) {
-    r = 4 * (v - vmin - 0.5 * dv) / dv;
-    b = 0;
-  } else {
-    g = 1 + 4 * (vmin + 0.75 * dv - v) / dv;
-    b = 0;
-  }
-
-  return [r, g, b];
+    n.getUnitZVector().then(
+        function(val) {
+            zMultiMatrix=val;
+        },
+        function(status) {
+            console.log(status);
+        });
 }

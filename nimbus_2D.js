@@ -1,14 +1,15 @@
+import { getColor } from './nimbus_common.js';
 
 var canvas = document.getElementById( '2d' );
 var ctx = canvas.getContext('2d');
 var imageData = ctx.getImageData(0, 0, 352,288);
 
 
-function render2Dscene( z_arr, conf, dist_arr ) {
-  for(var i = 0; i < numPixels; i++) {
+export function render2Dscene( z_arr, conf, dist_arr, distMin, distMax) {
+  for(var i = 0; i < dist_arr.length; i++) {
     if (conf[i] === 0)
     {
-      var col = getColor(dist_arr[i]);
+      var col = getColor(dist_arr[i], distMin, distMax);
       var r = col[0];
       var g = col[1];
       var b = col[2];

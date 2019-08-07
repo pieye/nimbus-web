@@ -6,12 +6,12 @@
 	<body>
     <table>
       <tr>
-        <td>Config:</td>
-        <td>Eine Kamera</td>
+        <td>Userland version:</td>
+        <td id="userlandVersion">...unknown...</td>
       </tr>
       <tr>
-        <td>Config 2:</td>
-        <td>'n Lankabel'</td>
+        <td>Imager ID:</td>
+        <td id="imagerID">...unknown...</td>
       </tr>
       <tr>
         <td>Laaaange Config:</td>
@@ -20,8 +20,32 @@
     </table>
     <br><a href="index.html">View</a>
 	</body>
+    <!--
   <script src="three.min.js"></script>
   <script src="nimbus_3D.js"></script>
   <script src="nimbus_2D.js"></script>
   <script src="nimbus.js"></script>
+  -->
+  <script type="module">
+        import { NimbusRPC } from './nimbusRPC.js';
+        
+        var n = new NimbusRPC(location.host);
+        n.getUserlandVersion().then(
+                function(val) {
+                    document.getElementById("userlandVersion").innerHTML=val;
+                },
+                function(status) {
+                    console.log(status);
+                });
+                
+        n.getIdent().then(
+                function(val) {
+                    document.getElementById("imagerID").innerHTML=val;
+                },
+                function(status) {
+                    console.log(status);
+                });
+                
+         n.getUnitXVector();
+    </script>
 </html>
