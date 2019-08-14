@@ -13,23 +13,24 @@
         <td>Imager ID:</td>
         <td id="imagerID">...unknown...</td>
       </tr>
-      <tr>
-        <td>Laaaange Config:</td>
-        <td>Thunderbolt Kabel mit einem langen text hintendran</td>
-      </tr>
     </table>
+        <div>
+            Log<br>
+            <textarea id="logTxt" name="log text" cols="80" rows="20"></textarea><br>
+            <input type="button" value="refresh log" id="getLog">
+        </div>
+    <br>
     <br><a href="index.html">View</a>
+        <a href="debug.html">Debug</a>
+
 	</body>
-    <!--
-  <script src="three.min.js"></script>
-  <script src="nimbus_3D.js"></script>
-  <script src="nimbus_2D.js"></script>
-  <script src="nimbus.js"></script>
-  -->
+
   <script type="module">
         import { NimbusRPC } from './nimbusRPC.js';
         
         var n = new NimbusRPC(location.host);
+        var logBut = document.getElementById("getLog");
+
         n.getUserlandVersion().then(
                 function(val) {
                     document.getElementById("userlandVersion").innerHTML=val;
@@ -45,7 +46,24 @@
                 function(status) {
                     console.log(status);
                 });
-                
-         n.getUnitXVector();
+       n.getLog().then(
+                function(val) {
+                    document.getElementById("logTxt").innerHTML = val;
+                },
+                function(status) {
+                    document.getElementById("logTxt").innerHTML = "Error: "+status; 
+                });
+               
+        logBut.onclick = function(){
+            n.getLog().then(
+                function(val) {
+                    document.getElementById("logTxt").innerHTML = val;
+                },
+                function(status) {
+                    document.getElementById("logTxt").innerHTML = "Error: "+status; 
+                });
+        };
+
+
     </script>
 </html>

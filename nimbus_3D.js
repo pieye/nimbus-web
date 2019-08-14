@@ -5,6 +5,7 @@ class Nimbus3DRender {
     constructor(element) {
         this.renderer = new THREE.WebGLRenderer();
 
+        this.renderer.setSize(500,500);
         element.appendChild( this.renderer.domElement );
 
         this.scene = new THREE.Scene();
@@ -103,7 +104,7 @@ class Nimbus3DRender {
         newDistMax = Math.max( distMax, dist_arr[index] );
 
         var colorVal = dist_arr[index];
-        var color = getColor(colorVal, distMin, distMax);
+        var color = getColor(colorVal, 0, 65535);
         if(conf[index] == 0)
         {
           positions[posIndex++] = x_arr[index];

@@ -19,55 +19,61 @@ var zMultiMatrix = null;
 
 var NB3D_docElement = document.getElementById( 'container3D' );
 var n3DRender = new Nimbus3DRender(NB3D_docElement);
+var nimbusRPC = new NimbusRPC(location.host);
+
+var slider = document.getElementById("expoSlider");
+slider.onchange = function() {
+    nimbusRPC.setExposure(this.value);
+}
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  getMultiMatrix();
+    getMultiMatrix();
+    getExpoSlider();
 });
 
 var dataStream = new WebSocket("ws://"+location.host+":8080/stream");
 dataStream.binaryType = 'arraybuffer';
 dataStream.onmessage=function(evt){
-  if (xMultiMatrix === null || yMultiMatrix === null || zMultiMatrix === null)
+    if (xMultiMatrix === null || yMultiMatrix === null || zMultiMatrix === null)
         return;
-  var data = evt.data;
-  var plotMin = distMin;
-  var plotMax = distMax;
-  // distMax = 0;
-  // distMin = 65432;
+    var data = evt.data;
+    var plotMin = distMin;
+    var plotMax = distMax;
+    // distMax = 0;
+    // distMin = 65432;
 
-  var offset = 2 * numPixels;
-  var ampl_arr = new Uint16Array(evt.data, 0, numPixels);
-  var dist_arr = new Uint16Array(evt.data, offset, numPixels);
-  offset += 2 * numPixels;
-  var conf = new Uint8Array(evt.data, offset, numPixels);
-  offset += numPixels;
+    var offset = 2 * numPixels;
+    var ampl_arr = new Uint16Array(evt.data, 0, numPixels);
+    var dist_arr = new Uint16Array(evt.data, offset, numPixels);
+    offset += 2 * numPixels;
+    var conf = new Uint8Array(evt.data, offset, numPixels);
+    offset += numPixels;
 
-  var t0 = performance.now();
+    var t0 = performance.now();
 
-  var x_arr = new Int16Array(numPixels);
-  var y_arr = new Int16Array(numPixels);
-  var z_arr = new Int16Array(numPixels);
+    var x_arr = new Int16Array(numPixels);
+    var y_arr = new Int16Array(numPixels);
+    var z_arr = new Int16Array(numPixels);
 
-  for (var i = 0; i < numPixels; i++) {
-     var temp;
-     temp = dist_arr[i] * xMultiMatrix[i];
-     x_arr[i] = (temp >> 16);
-     temp = dist_arr[i] * yMultiMatrix[i];
-     y_arr[i] = (temp >> 16);
-     temp = dist_arr[i] * zMultiMatrix[i];
-     z_arr[i] = (temp >> 16);
-  }
+    for (var i = 0; i < numPixels; i++) {
+        var temp;
+        temp = dist_arr[i] * xMultiMatrix[i];
+        x_arr[i] = (temp >> 16);
+        temp = dist_arr[i] * yMultiMatrix[i];
+        y_arr[i] = (temp >> 16);
+        temp = dist_arr[i] * zMultiMatrix[i];
+        z_arr[i] = (temp >> 16);
+    }
 
-  var t1 = performance.now();
-  //console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
+    var t1 = performance.now();
+    //console.log("Call to doSomething took " + (t1 - t0) + " milliseconds.")
 
-  distMin, distMax = n3DRender.render3Dscene( x_arr, y_arr, z_arr, dist_arr, conf, plotMin, plotMax );
-  render2Dscene( z_arr, conf, dist_arr, plotMin, plotMax );
+    distMin, distMax = n3DRender.render3Dscene( x_arr, y_arr, z_arr, dist_arr, conf, plotMin, plotMax );
+    render2Dscene( ampl_arr, conf, plotMin, plotMax );
 };
 
 function getMultiMatrix() {
-    var n = new NimbusRPC(location.host);
-    n.getUnitXVector().then(
+    nimbusRPC.getUnitXVector().then(
         function(val) {
             xMultiMatrix=val;
         },
@@ -75,7 +81,7 @@ function getMultiMatrix() {
             console.log(status);
         });
 
-    n.getUnitYVector().then(
+    nimbusRPC.getUnitYVector().then(
         function(val) {
             yMultiMatrix=val;
         },
@@ -83,9 +89,19 @@ function getMultiMatrix() {
             console.log(status);
         });
 
-    n.getUnitZVector().then(
+    nimbusRPC.getUnitZVector().then(
         function(val) {
             zMultiMatrix=val;
+        },
+        function(status) {
+            console.log(status);
+        });
+}
+
+function getExpoSlider() {
+    nimbusRPC.getExposures().then(
+        function(val) {
+            slider.value=val[0]["exposure"];
         },
         function(status) {
             console.log(status);
