@@ -1,0 +1,112 @@
+<html>
+    <head>
+        <title>Debug</title>
+        <link rel="stylesheet" href="style.css" type="text/css">
+    </head>
+    <body>
+        <h1>Debug</h1>
+        <div>
+           Register Address: <input type="text" name="regAddr" id="regAddr"><br>
+           Register Value: <input type="text" name="regVal" id="regValue"><br>
+           <div id="status"></div><br>
+           <input type="button" value="write" id="writeReg">
+           <input type="button" value="read" id="readReg">
+        </div>
+        <br>
+        <br>
+        <label>
+          <input type="checkbox" name="mod_freq" id="modFreq">
+          3.5MHz Modulation
+        </label>
+        <br>&nbsp;
+        <br>
+        <a href="index.html">View</a>
+        <a href="hardware.html">About</a>
+    </body>
+    <script type="module">
+        import { NimbusRPC } from './nimbusRPC.js';
+
+        var n = new NimbusRPC(location.host);
+        var writeReg = document.getElementById("writeReg");
+        var readReg = document.getElementById("readReg");
+        var modFreq = document.getElementById("modFreq");
+
+        n.getSequences().then(
+            function(response) {
+                if (response[0]["pll"] === 0)
+                    modFreq.checked = false;
+                else
+                    modFreq.checked = true;
+            },
+            function(status) {
+                console.log("error getting sequences: " + status);
+        });
+
+        modFreq.onclick = function(){
+            var pll = 0;
+            if (modFreq.checked === true)
+                pll = 3;
+
+            n.getSequences().then(
+                function(response) {
+                    var i;
+                    for (i=0;i<response.length;i++)
+                    {
+                        response[i]["pll"] = pll;
+                    }
+                    n.setSequences(response).then(
+                        function(response) {},
+                        function(status) {
+                            alert("error setting sequences: " + status);
+                    });
+                },
+                function(status) {
+                    alert("error getting sequences: " + status);
+            });
+        }
+
+        writeReg.onclick = function(){
+            var addr = parseInt(document.getElementById("regAddr").value);
+            var value = parseInt(document.getElementById("regValue").value);
+
+            if (isNaN(addr)) {
+                document.getElementById("regAddr").value = "";
+                document.getElementById("status").innerHTML = "invalid addr";
+            }
+            else if (isNaN(value)) {
+                document.getElementById("regValue").value = "";
+                document.getElementById("status").innerHTML = "invalid value";
+            }
+            else {
+                document.getElementById("status").innerHTML = "";
+                n.setRegister(addr, value).then(
+                    function() {
+                        document.getElementById("status").innerHTML = "OK";
+                    },
+                    function(status) {
+                        document.getElementById("status").innerHTML = "Error: "+status; 
+                    });
+            }
+        };
+
+        readReg.onclick = function(){
+            var addr = parseInt(document.getElementById("regAddr").value);
+
+            if (isNaN(addr)) {
+                document.getElementById("regAddr").value = "";
+                document.getElementById("status").innerHTML = "invalid addr";
+            }
+            else {
+                document.getElementById("status").innerHTML = "";
+                document.getElementById("regValue").innerHTML = "";
+                n.getRegister(addr).then(
+                    function(val) {
+                        document.getElementById("status").innerHTML = "Content: 0x"+val.toString(16);
+                    },
+                    function(status) {
+                        document.getElementById("status").innerHTML = "Error: "+status; 
+                    });
+            }
+        };
+    </script>
+</html>
