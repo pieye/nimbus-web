@@ -9,17 +9,15 @@ var NB3D_docElement = document.getElementById( 'container3D' );
 var n3DRender = new Nimbus3DRender(NB3D_docElement);
 var nimbusRPC = new NimbusRPC(location.host);
 
-/*
 var slider = document.getElementById("expoSlider");
 slider.onchange = function() {
     nimbusRPC.setExposure(this.value);
 }
-*/
 
 var statusbar = document.getElementById("statusbar");
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    //getExpoSlider();
+    getExpoSlider();
 });
 
 let cb = function onNewData(header, ampl_arr, dist_arr, conf, x_arr, y_arr, z_arr)

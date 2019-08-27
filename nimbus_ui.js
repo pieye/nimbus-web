@@ -10,8 +10,15 @@ var resolutionWidth = 352;
 $( document ).ready(function() {
   
   // connect clicks
-  $( 'button' ).click( function() { toggleFullScreen( $( this ).parent( '.viewContainer' ) ) });
+  $( 'button.toggleFullScreen' ).click( function() { toggleFullScreen( $( this ).parent( '.viewContainer' ) ) });
+  $( 'button#globalSettingsButton' ).click( function() { toggleGlobalSettings() });
+  
+  // set position
 });
+
+function toggleGlobalSettings() {
+  $( '#globalSettingsContainer' ).toggle();
+}
 
 function toggleFullScreen( parentContainer ) {
   if( parentContainer.hasClass( 'fullScreen' ) ) {

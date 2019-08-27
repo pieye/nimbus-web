@@ -6,7 +6,7 @@
 /* Classes */
 
 .fullScreen {
-  background: rgba( 0, 0, 0, 0.82 );
+  background: rgba( 0, 0, 0, 0.88 );
   left: 0;
   position: absolute;
   top: 0;
@@ -14,7 +14,6 @@
 
 .viewContainer {
   position: relative;
-  outline: 1px solid #f00;
 }
 
 /* Elements */
@@ -29,16 +28,19 @@ a:hover {
 }
 
 body {
+  background-color: #333;
   margin: 0;
   text-align: center;
 }
 
 button {
-  bottom: 4px;
+  border: none;
+  bottom: 8px;
   height: 32px;
   position: absolute;
   right: 4px;
   width: 32px;
+  z-index: 900;
 }
 
 canvas {
@@ -54,6 +56,7 @@ h1{
 
 table {
   margin: 3rem auto;
+  width: 100%;
 }
 
 td {
@@ -70,6 +73,27 @@ tr:last-child td {
 }
 
 /* IDs */
+
+#globalSettingsButton {
+  position: absolute;
+  left: 4px;
+  z-index: 1000;
+}
+
+#globalSettingsContainer {
+  background-color: rgba( 0, 0, 0, 0.88 );
+  bottom: 0;
+  display: none;
+  padding: 1rem 10%;
+  position: absolute;
+  width: 80%;
+  z-index: 700;
+}
+
+#globalSettingsContainer input {
+  outline: 1px solid #0f0;
+  width: 100%;
+}
 
 #viewHull {
   display: flex;

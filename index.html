@@ -10,18 +10,24 @@
 <body>
   <h1>Nimbus 1</h1>
   <div id="viewHull">
-    <div class="viewContainer" id="container3D"><button></button></div>
-    <div class="viewContainer" id="container2D"><canvas id="2d" width="352" height="288"></canvas><button></button></div>
-    <div class="viewContainer" ><canvas width="352" height="288"></canvas><button></button></div>
+    <div class="viewContainer" id="container3D"><button class="toggleFullScreen"></button></div>
+    <div class="viewContainer" id="container2D"><canvas id="2d" width="352" height="288"></canvas><button class="toggleFullScreen"></button></div>
+    <div class="viewContainer" ><canvas width="352" height="288"></canvas><button class="toggleFullScreen"></button></div>
   </div>
 
-  <button id="globalSettings"></button>
+  <button id="globalSettingsButton"></button>
+  
+  <div id="globalSettingsContainer">
+    <table>
+      <tr>
+        <td>Exposure</td>
+        <td><input type="range" min="0" max="65535" value="50" class="slider" id="expoSlider"></td>
+      </tr>
+    </table>
+  </div>
   <!--
   <br>&nbsp;
   <div>Exposure</div>
-  <div class="slidecontainer">
-    <input type="range" min="0" max="65535" value="50" class="slider" id="expoSlider">
-  </div>
   <br>&nbsp;
   <br>
   <a href="hardware.html">About</a>
