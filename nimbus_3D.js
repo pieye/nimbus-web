@@ -95,16 +95,11 @@ class Nimbus3DRender {
       var positions = this.points.geometry.attributes.position.array;
       var lutColors = this.points.geometry.attributes.color.array;
       var posIndex = 0;
-      
-      var newDistMin;
-      var newDistMax;
 
       for( var index = 0; index < dist_arr.length; index++ )  {
-        newDistMin = Math.min( distMin, dist_arr[index] );
-        newDistMax = Math.max( distMax, dist_arr[index] );
 
         var colorVal = dist_arr[index];
-        var color = getColor(colorVal, 0, 65535);
+        var color = getColor(colorVal, distMin, distMax);
         if(conf[index] == 0)
         {
           positions[posIndex++] = x_arr[index];
@@ -127,7 +122,6 @@ class Nimbus3DRender {
       this.points.geometry.attributes.position.needsUpdate = true;
       this.points.geometry.attributes.color.needsUpdate = true;
       this.renderer.render( this.scene, this.camera );
-      return newDistMin, newDistMax
     }
 
     setupCamera() {

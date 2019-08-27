@@ -1,7 +1,7 @@
 import { NimbusRPC } from './nimbusRPC.js';
 import { NimbusStream } from './nimbusStream.js';
 import { Nimbus3DRender } from './nimbus_3D.js';
-import { render2Dscene } from './nimbus_2D.js';
+import { render2Dscene, render2DRadialscene } from './nimbus_2D.js';
 
 // # Variable declarations
 
@@ -25,10 +25,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 let cb = function onNewData(header, ampl_arr, dist_arr, conf, x_arr, y_arr, z_arr)
 {
     var plotMin = 0;
-    var plotMax = 0;
+    var plotMax = 65535;
     //statusbar.innerHTML = "Temp: " + (header[9]/10).toFixed(1) + "&deg;C | fps: " + header[8].toFixed(1);
     n3DRender.render3Dscene( x_arr, y_arr, z_arr, dist_arr, conf, plotMin, plotMax );
     render2Dscene( ampl_arr, conf, plotMin, plotMax);
+    render2DRadialscene( dist_arr, conf, plotMin, plotMax);
 }
 
 var nimbusStream = new NimbusStream(location.host, cb);
