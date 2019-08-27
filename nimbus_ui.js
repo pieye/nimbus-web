@@ -21,16 +21,7 @@ function toggleGlobalSettings() {
   var windowH = $( window ).height();
   var containerH = $( '#globalSettingsContainer' ).outerHeight( false );
   
-  $( '#globalSettingsContainer' ).animate({ top: windowH }, animationDT );
-  
-  if( $( '#globalSettingsContainer' ).position().top >= windowH ) {
-    alert( containerH );
-    $( '#globalSettingsContainer' ).animate({ top: windowH - containerH }, animationDT );
-  }
-  else {
-    $( '#globalSettingsContainer' ).animate({ top: windowH }, animationDT );
-  }
-  
+  $( '#globalSettingsContainer' ).slideToggle( animationDT );
 }
 
 function toggleFullScreen( parentContainer ) {

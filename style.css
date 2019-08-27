@@ -28,7 +28,7 @@ a:hover {
 }
 
 body {
-  background-color: #333;
+  background-color: #222;
   margin: 0;
   text-align: center;
 }
@@ -66,6 +66,7 @@ td {
 
 td:first-child {
   text-align: right;
+  width: 10%;
 }
 
 tr:last-child td {
@@ -75,7 +76,7 @@ tr:last-child td {
 /* IDs */
 
 #globalSettingsButton {
-  position: absolute;
+  position: fixed;
   left: 4px;
   z-index: 1000;
 }
@@ -83,7 +84,8 @@ tr:last-child td {
 #globalSettingsContainer {
   background-color: rgba( 0, 0, 0, 0.88 );
   bottom: 0;
-  /* display: none; */
+  color: #fff;
+  display: none;
   padding: 1rem 10%;
   position: absolute;
   width: 80%;
@@ -91,7 +93,6 @@ tr:last-child td {
 }
 
 #globalSettingsContainer input {
-  outline: 1px solid #0f0;
   width: 100%;
 }
 
