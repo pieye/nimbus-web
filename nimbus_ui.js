@@ -5,6 +5,8 @@
 var resolutionHeight = 288;
 var resolutionWidth = 352;
 
+var animationDT = 666;
+
 // On document loaded
 
 $( document ).ready(function() {
@@ -13,11 +15,22 @@ $( document ).ready(function() {
   $( 'button.toggleFullScreen' ).click( function() { toggleFullScreen( $( this ).parent( '.viewContainer' ) ) });
   $( 'button#globalSettingsButton' ).click( function() { toggleGlobalSettings() });
   
-  // set position
 });
 
 function toggleGlobalSettings() {
-  $( '#globalSettingsContainer' ).toggle();
+  var windowH = $( window ).height();
+  var containerH = $( '#globalSettingsContainer' ).outerHeight( false );
+  
+  $( '#globalSettingsContainer' ).animate({ top: windowH }, animationDT );
+  
+  if( $( '#globalSettingsContainer' ).position().top >= windowH ) {
+    alert( containerH );
+    $( '#globalSettingsContainer' ).animate({ top: windowH - containerH }, animationDT );
+  }
+  else {
+    $( '#globalSettingsContainer' ).animate({ top: windowH }, animationDT );
+  }
+  
 }
 
 function toggleFullScreen( parentContainer ) {

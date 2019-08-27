@@ -83,7 +83,7 @@ tr:last-child td {
 #globalSettingsContainer {
   background-color: rgba( 0, 0, 0, 0.88 );
   bottom: 0;
-  display: none;
+  /* display: none; */
   padding: 1rem 10%;
   position: absolute;
   width: 80%;
