@@ -5,7 +5,7 @@ class Nimbus3DRender {
     constructor(element) {
         this.renderer = new THREE.WebGLRenderer();
 
-        this.renderer.setSize(500,500);
+        // this.renderer.setSize(500,500);
         element.appendChild( this.renderer.domElement );
 
         this.scene = new THREE.Scene();

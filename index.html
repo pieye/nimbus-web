@@ -1,22 +1,32 @@
+<!DOCTYPE HTML>
 <html>
-    <head>
-        <title>Nimbus 1 by pieye</title>
-        <link rel="stylesheet" href="style.css" type="text/css">
-    </head>
-    <body>
-        <h1>Nimbus 1</h1>
-        <div id="container3D"></div>
-        <div id="container2D"><canvas id="2d" width="352" height="288"></canvas></div>
-        <br>&nbsp;
-        <div>Exposure</div>
-        <div class="slidecontainer">
-            <input type="range" min="0" max="65535" value="50" class="slider" id="expoSlider">
-        </div>
-        <br>&nbsp;
-        <br><a href="hardware.html">About</a>
-            <a href="debug.html">Debug</a>
+  <head>
+    <title>Nimbus 1 by pieye</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    
+    <script src="jquery-3.4.1.min.js"></script>
+    <script src="nimbus_ui.js"></script>
+  </head>
+<body>
+  <h1>Nimbus 1</h1>
+  <div id="viewHull">
+    <div class="viewContainer" id="container3D"><button></button></div>
+    <div class="viewContainer" id="container2D"><canvas id="2d" width="352" height="288"></canvas><button></button></div>
+    <div class="viewContainer" ><canvas width="352" height="288"></canvas><button></button></div>
+  </div>
 
-    </body>
-    <script src="three.min.js"></script>
-    <script type="module" src="nimbus.js"></script>
+  <br>&nbsp;
+  <div>Exposure</div>
+  <div class="slidecontainer">
+    <input type="range" min="0" max="65535" value="50" class="slider" id="expoSlider">
+  </div>
+  <br>&nbsp;
+  <br>
+  <a href="hardware.html">About</a>
+  <a href="debug.html">Debug</a>
+</body>
+  
+<script src="three.min.js"></script>
+<script type="module" src="nimbus.js"></script>
+
 </html>
