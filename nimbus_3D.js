@@ -19,7 +19,8 @@ class Nimbus3DRender {
 
         var material = new THREE.PointsMaterial( {
           side: THREE.DoubleSide,
-          color: 0xF5F5F5,
+          size: 20,
+          color: 0xFFFFFF,
           vertexColors: THREE.VertexColors
         });
 
