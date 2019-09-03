@@ -7,39 +7,42 @@
     <script src="jquery-3.4.1.min.js"></script>
     <script src="nimbus_ui.js"></script>
   </head>
-<body>
-  <h1>Nimbus 1</h1>
-  <div id="viewHull">
-    <div class="viewContainer" id="container3D"><button class="toggleFullScreen"></button></div>
-    <div class="viewContainer" id="container2DAmp">
-      <canvas id="2dAmp" width="352" height="288"></canvas>
-      <button class="toggleFullScreen"></button>
+  <body>
+    <div id="infoContainer">
+      <span class="label">fps: </span><span id="fpsValue" class="value"></span> |
+      <span class="label">temp: </span><span id="tempValue" class="value"></span>
     </div>
-    <div class="viewContainer" id="container2DDist">
-      <canvas id="2dRad" width="352" height="288"></canvas>
-      <button class="toggleFullScreen"></button></div>
-  </div>
+    
+    
+    <h1>Nimbus 1</h1>
+    <div id="viewHull">
+      <div class="viewContainer" id="container3D">
+        <button class="toggleFullScreen"></button>
+      </div>
+      <div class="viewContainer" id="container2DAmp">
+        <canvas id="2dAmp" width="352" height="288"></canvas>
+        <button class="toggleFullScreen"></button>
+      </div>
+      <div class="viewContainer" id="container2DDist">
+        <canvas id="2dRad" width="352" height="288"></canvas>
+        <button class="toggleFullScreen"></button></div>
+    </div>
 
-  <button id="globalSettingsButton"></button>
-  
-  <div id="globalSettingsContainer">
-    <table>
-      <tr>
-        <td>Exposure</td>
-        <td><input type="range" min="0" max="65535" value="50" class="slider" id="expoSlider"></td>
-      </tr>
-    </table>
-  </div>
-  <!--
-  <br>&nbsp;
-  <div>Exposure</div>
-  <br>&nbsp;
-  <br>
-  <a href="hardware.html">About</a>
-  <a href="debug.html">Debug</a> -->
-</body>
-  
-<script src="three.min.js"></script>
-<script type="module" src="app.js"></script>
+    <button id="globalSettingsButton"></button>
+    <button id="showInfoButton"></button>
 
+    <div id="globalSettingsContainer">
+      <table>
+        <tr>
+          <td>Exposure</td>
+          <td><input type="range" min="0" max="65535" value="50" class="slider" id="expoSlider"></td>
+        </tr>
+      </table>
+    </div>
+    <!--
+    <a href="hardware.html">About</a>
+    <a href="debug.html">Debug</a> -->
+  </body>
+  <script src="three.min.js"></script>
+  <script type="module" src="app.js"></script>
 </html>

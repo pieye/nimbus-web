@@ -12,19 +12,22 @@ var animationDT = 666;
 $( document ).ready(function() {
   
   // connect clicks
-  $( 'button.toggleFullScreen' ).click( function() { toggleFullScreen( $( this ).parent( '.viewContainer' ) ) });
+  $( 'button.toggleFullScreen' ).click( function() { toggleFullScreen( $( this ) ) });
   $( 'button#globalSettingsButton' ).click( function() { toggleGlobalSettings() });
+  $( 'button#showInfoButton' ).click( function() { toggleTopInfos() });
   
 });
 
 function toggleGlobalSettings() {
-  var windowH = $( window ).height();
-  var containerH = $( '#globalSettingsContainer' ).outerHeight( false );
-  
   $( '#globalSettingsContainer' ).slideToggle( animationDT );
 }
 
-function toggleFullScreen( parentContainer ) {
+function toggleTopInfos() {
+  $( '#infoContainer' ).slideToggle( animationDT );
+}
+
+function toggleFullScreen( button ) {
+  var parentContainer = button.parent( '.viewContainer' )
   if( parentContainer.hasClass( 'fullScreen' ) ) {
     parentContainer.removeClass( 'fullScreen' );
     $( 'h1' ).show();
@@ -41,6 +44,8 @@ function toggleFullScreen( parentContainer ) {
       overflow: 'inherit',
       height: 'inherit'
     });
+    
+    button.removeClass( 'toNormal' );
   }
   else {
     parentContainer.addClass( 'fullScreen' );
@@ -68,5 +73,7 @@ function toggleFullScreen( parentContainer ) {
       overflow: 'hidden',
       height: '100%'
     });
+    
+    button.addClass( 'toNormal' );
   }
 }

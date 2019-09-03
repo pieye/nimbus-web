@@ -1,5 +1,5 @@
 * {
-  color: #32afd7;
+  color: #fff;
   font-family: sans-serif;
 }
 
@@ -34,14 +34,20 @@ body {
 }
 
 button {
+  background-color: rgba( 255, 255, 255, 0.66 );
+  background-position: center;
+  border: 1px solid rgb( 128, 128, 128 );
   border: none;
   bottom: 8px;
-  height: 32px;
+  height: 38px;
   position: absolute;
   right: 4px;
-  width: 32px;
+  width: 38px;
   z-index: 900;
 }
+
+button.toggleFullScreen { background-image: url( '/assets/full_screen.png' ); }
+button.toggleFullScreen.toNormal { background-image: url( '/assets/normal_size.png' ); }
 
 canvas {
   height: 288px;
@@ -50,8 +56,12 @@ canvas {
 }
 
 h1{
+  color: #32afd7;
   margin-top: 4%;
   margin-bottom: 2%;
+}
+
+input[type="range"] {
 }
 
 table {
@@ -84,8 +94,7 @@ tr:last-child td {
 #globalSettingsContainer {
   background-color: rgba( 0, 0, 0, 0.88 );
   bottom: 0;
-  color: #fff;
-  display: none;
+  /* display: none; */
   padding: 1rem 10%;
   position: absolute;
   width: 80%;
@@ -94,6 +103,20 @@ tr:last-child td {
 
 #globalSettingsContainer input {
   width: 100%;
+}
+
+#infoContainer {
+  background-color: rgba( 0, 0, 0, 0.88 );
+  display: none;
+  padding: 1rem 10%;
+  position: absolute;
+  top: 0;
+  width: 80%;
+  z-index: 1000;
+}
+
+#showInfoButton {
+  left: 46px;
 }
 
 #viewHull {
