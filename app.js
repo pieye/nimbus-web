@@ -25,7 +25,6 @@ let cb = function onNewData(header, ampl_arr, dist_arr, conf, x_arr, y_arr, z_ar
 {
   var plotMin = 0;
   var plotMax = 65535;
-  //statusbar.innerHTML = "Temp: " + (header[9]/10).toFixed(1) + "&deg;C | fps: " + header[8].toFixed(1);
   n3DRender.render3Dscene( x_arr, y_arr, z_arr, dist_arr, conf, plotMin, plotMax );
   render2Dscene( ampl_arr, conf, plotMin, plotMax);
   render2DRadialscene( dist_arr, conf, plotMin, plotMax);

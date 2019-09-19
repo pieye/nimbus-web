@@ -34,9 +34,9 @@ body {
 }
 
 button {
-  background-color: rgba( 255, 255, 255, 0.66 );
+  background-color: transparent;
   background-position: center;
-  border: 1px solid rgb( 128, 128, 128 );
+  background-size: contain;
   border: none;
   bottom: 8px;
   height: 38px;
@@ -46,8 +46,21 @@ button {
   z-index: 900;
 }
 
-button.toggleFullScreen { background-image: url( '/assets/full_screen.png' ); }
-button.toggleFullScreen.toNormal { background-image: url( '/assets/normal_size.png' ); }
+button.toggleFullScreen {
+  background-image: url( '/assets/full_screen.png' );
+}
+
+button.toggleFullScreen.toNormal {
+  background-image: url( '/assets/normal_size.png' );
+}
+
+button#showInfoButton {
+  background-image: url( '/assets/data.png' );
+}
+
+button#globalSettingsButton {
+  background-image: url( '/assets/illumination.png' );
+}
 
 canvas {
   height: 288px;
@@ -94,7 +107,7 @@ tr:last-child td {
 #globalSettingsContainer {
   background-color: rgba( 0, 0, 0, 0.88 );
   bottom: 0;
-  /* display: none; */
+  display: none;
   padding: 1rem 10%;
   position: absolute;
   width: 80%;
