@@ -19,7 +19,7 @@
 /* Elements */
 
 a {
-  color: #377BB5;
+  color: #52A7ED;
   text-decoration: none;
 }
 
@@ -69,7 +69,6 @@ canvas {
 }
 
 h1{
-  color: #32afd7;
   margin-top: 4%;
   margin-bottom: 2%;
 }
@@ -90,6 +89,10 @@ td {
 td:first-child {
   text-align: right;
   width: 10%;
+}
+
+textarea {
+  color: #333;
 }
 
 tr:last-child td {
