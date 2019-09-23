@@ -14,6 +14,8 @@ class Nimbus3DRender {
 
         this.NB3D_lastXPos = 0;
         this.NB3D_lastYPos = 0;
+      
+        this.NB3D_3DinteractionState = '';
 
         this.viewCenter = new THREE.Vector3( 0, 0, 10000 );
 
@@ -38,7 +40,11 @@ class Nimbus3DRender {
         geometry.setDrawRange( 0, numPixels );
 
         var self = this;
+      
         element.onmousedown = function( eve ) {
+          
+            if( eve.altKey ) this.NB3D_3DinteractionState = 'alt';
+          
             self.NB3D_mouseDown = true;
             self.NB3D_lastXPos = eve.clientX;
             self.NB3D_lastYPos = eve.clientY;
@@ -53,12 +59,19 @@ class Nimbus3DRender {
             var y = eve.clientY - self.NB3D_lastYPos;
             self.NB3D_lastYPos = eve.clientY;
             
-            self.rotateCamera( x / 100, y / 100 );
+            if( this.NB3D_3DinteractionState === 'alt' ) self.moveCameraAndView( x * 15, y * 15 );
+            else self.rotateCamera( x / 80, y / 80 );
         };
 
         element.onmouseup = function() {
-            self.NB3D_mouseDown = false;
+          self.NB3D_mouseDown = false;
+          this.NB3D_3DinteractionState = '';
         };
+      
+        element.onmouseleave = function() {
+          self.NB3D_mouseDown = false;
+          this.NB3D_3DinteractionState = '';
+        }
 
         element.onwheel = function( eve ) {
             eve.preventDefault();
@@ -75,6 +88,16 @@ class Nimbus3DRender {
         }
     }
 
+    moveCameraAndView( shiftX, shiftY ) {
+      var newCamPos = this.camera.position + this.camera.up * 1;
+      
+      this.camera.position.y = this.camera.position.y + shiftY;
+      this.camera.position.x = this.camera.position.x + shiftX;
+      
+      this.viewCenter.y = this.viewCenter.y + shiftY;
+      this.viewCenter.x = this.viewCenter.x + shiftX;
+    }
+  
     rotateCamera( angleHorizontal, angleVertical ) {
       var lookAtToCam = new THREE.Vector3().subVectors( this.camera.position, this.viewCenter );
       var rotAxis = this.camera.up;

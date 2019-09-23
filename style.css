@@ -74,7 +74,8 @@ h1{
   margin-bottom: 2%;
 }
 
-input[type="range"] {
+input {
+  color: #000;
 }
 
 table {
@@ -129,6 +130,18 @@ tr:last-child td {
   top: 0;
   width: 80%;
   z-index: 1000;
+}
+
+#logos {
+  bottom: 0;
+  margin: 0 40px 20px 0;
+  position: fixed;
+  right: 0;
+}
+
+#logos a {
+  border: none;
+  margin-left: 20px;
 }
 
 #showInfoButton {
