@@ -111,6 +111,7 @@ class Nimbus3DRender {
       this.camera.position.z = newCamPos.z;
       
       this.viewCenter = newViewCenterPos;
+      this.camera.lookAt( this.viewCenter );
     }
   
     rotateCameraAroundItself( angle ) {
