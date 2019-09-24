@@ -59,8 +59,8 @@ class Nimbus3DRender {
             var y = eve.clientY - self.NB3D_lastYPos;
             self.NB3D_lastYPos = eve.clientY;
             
-            if( this.NB3D_3DinteractionState === 'alt' ) self.moveCameraAndView( x * 15, y * 15 );
-            else self.rotateCamera( x / 80, y / 80 );
+            if( this.NB3D_3DinteractionState === 'alt' ) self.moveCameraAndView( x * 25, y * 25 );
+            else self.rotateCamera( x / 66, y / 66 );
         };
 
         element.onmouseup = function() {
@@ -89,13 +89,26 @@ class Nimbus3DRender {
     }
 
     moveCameraAndView( shiftX, shiftY ) {
-      var newCamPos = this.camera.position + this.camera.up * 1;
+      var camToLookViewCenter = new THREE.Vector3().subVectors( this.viewCenter, this.camera.position );
+      var lookLeftFromCam = new THREE.Vector3().crossVectors( this.camera.up, camToLookViewCenter );
       
-      this.camera.position.y = this.camera.position.y + shiftY;
-      this.camera.position.x = this.camera.position.x + shiftX;
+      lookLeftFromCam.normalize();
+      lookLeftFromCam.multiplyScalar( shiftX );
       
-      this.viewCenter.y = this.viewCenter.y + shiftY;
-      this.viewCenter.x = this.viewCenter.x + shiftX;
+      var shiftUp = new THREE.Vector3( this.camera.up.x, this.camera.up.y, this.camera.up.z );
+      shiftUp.normalize();
+      shiftUp.multiplyScalar( shiftY );
+      
+      var newCamPos = new THREE.Vector3().addVectors( this.camera.position, lookLeftFromCam );
+      newCamPos = new THREE.Vector3().addVectors( newCamPos, shiftUp );
+      var newViewCenterPos = new THREE.Vector3().addVectors( this.viewCenter, shiftUp );
+      newViewCenterPos = new THREE.Vector3().addVectors( newViewCenterPos, lookLeftFromCam );
+      
+      this.camera.position.x = newCamPos.x;
+      this.camera.position.y = newCamPos.y;
+      this.camera.position.z = newCamPos.z;
+      
+      this.viewCenter = newViewCenterPos;
     }
   
     rotateCamera( angleHorizontal, angleVertical ) {
