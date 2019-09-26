@@ -44,7 +44,7 @@ button {
   position: absolute;
   right: 4px;
   width: 38px;
-  z-index: 900;
+  z-index: 950;
 }
 
 button.toggleFullScreen {
