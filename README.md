@@ -1,5 +1,7 @@
-# nimbus-web
+<img src="./assets/PIEYE_Logo_RGB_POS.png" align="right"
+     title="pieye logo" width="184" height="55">
 
+# nimbus-web
 Welcome to nimbus-web. Nimbus-web are the official web pages of the nimbus 3D web interface.
 
 # Getting Started
