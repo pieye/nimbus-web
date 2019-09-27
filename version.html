@@ -1,0 +1,115 @@
+<html>
+	<head>
+		<title>Hardware configuration</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+	</head>
+	<body>
+    <br />
+    <a href="index.html">Back to view</a>
+    <table>
+      <tr>
+        <td>Webpages version:</td>
+        <td id="webpagesVersion">...unknown...</td>
+      </tr>
+
+      <tr>
+        <td>Userland version:</td>
+        <td id="userlandVersion">...server not running...</td>
+      </tr>
+      <tr>
+        <td>Imager ID:</td>
+        <td id="imagerID">...server not running...</td>
+      </tr>
+      <tr>
+        <td>
+            <input type="button" value="checkUpdate" id="checkUpdate">
+        </td>
+        <td id="updateResult"></td>
+      </tr>
+
+    </table>
+        <div>
+            Log<br>
+            <textarea id="logTxt" name="log text" cols="80" rows="20"></textarea><br>
+            <input type="button" value="refresh log" id="getLog">
+        </div>
+        <!-- <a href="debug.html">Debug</a> -->
+
+	</body>
+
+  <script type="module">
+        import { NimbusRPC } from './nimbusRPC.js';
+        import { isNewerVersion, getVersionString } from './version.js';
+        
+        var n = new NimbusRPC(location.host);
+        var logBut = document.getElementById("getLog");
+        var updateBut = document.getElementById("checkUpdate");
+        document.getElementById("webpagesVersion").innerHTML = getVersionString();
+
+        n.getUserlandVersion().then(
+                function(val) {
+                    document.getElementById("userlandVersion").innerHTML=val;
+                },
+                function(status) {
+                    console.log(status);
+                });
+                
+        n.getIdent().then(
+                function(val) {
+                    document.getElementById("imagerID").innerHTML=val;
+                },
+                function(status) {
+                    console.log(status);
+                });
+       n.getLog().then(
+                function(val) {
+                    document.getElementById("logTxt").innerHTML = val;
+                },
+                function(status) {
+                    document.getElementById("logTxt").innerHTML = "Error: "+status; 
+                });
+               
+        logBut.onclick = function(){
+            n.getLog().then(
+                function(val) {
+                    document.getElementById("logTxt").innerHTML = val;
+                },
+                function(status) {
+                    document.getElementById("logTxt").innerHTML = "Error: "+status; 
+                });
+        };
+
+        function getJSON(url) {
+            var p1 = new Promise(
+                function(resolve, reject) {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', url, true);
+                    xhr.responseType = 'json';
+                    xhr.onload = function() {
+                        var status = xhr.status;
+                        if (status === 200)
+                            resolve(xhr.response);
+                        else
+                            reject(xhr.status, xhr.response);
+                    }
+
+                xhr.send();
+            });
+            return p1;
+        }
+
+        updateBut.onclick = function(){
+            getJSON("https://api.github.com/repos/pieye/nimbus-web/releases").then(
+                function(response) {
+                    if (isNewerVersion(response[0]["tag_name"]))
+                        document.getElementById("updateResult").innerHTML = 'new version available, check <a href="https://cloud.pieye.org/index.php/s/c2QSa6P4wBtSJ4K" target="_blank">here</a>';
+                    else
+                        document.getElementById("updateResult").innerHTML = 'you are up-to-date';
+                },
+                function(status, response) {
+                    document.getElementById("updateResult").innerHTML = "check your internet connection (status code="+status+")"; 
+                });
+        };
+
+    </script>
+</html>
