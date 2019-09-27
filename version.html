@@ -99,9 +99,9 @@
         }
 
         updateBut.onclick = function(){
-            getJSON("https://api.github.com/repos/pieye/nimbus-web/releases").then(
+            getJSON("https://api.github.com/repos/pieye/nimbus-web/releases/latest").then(
                 function(response) {
-                    if (isNewerVersion(response[0]["tag_name"]))
+                    if (isNewerVersion(response["tag_name"]))
                         document.getElementById("updateResult").innerHTML = 'new version available, check <a href="https://cloud.pieye.org/index.php/s/c2QSa6P4wBtSJ4K" target="_blank">here</a>';
                     else
                         document.getElementById("updateResult").innerHTML = 'you are up-to-date';

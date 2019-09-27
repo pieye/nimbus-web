@@ -1,7 +1,7 @@
 var major = 0;
 var minor = 0;
-var patch = 1;
-var desc = "";
+var patch = 2;
+var desc = "dirty";
 
 function getVersionString() {
     if (desc==="")
