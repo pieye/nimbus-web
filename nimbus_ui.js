@@ -1,4 +1,4 @@
-
+import { Nimbus3DRenderSingle } from './nimbus_3D.js';
 
 // Variables
 // resolution height and width
@@ -27,7 +27,10 @@ function toggleTopInfos() {
 }
 
 function toggleFullScreen( button ) {
+  var NB3D_docElement = document.getElementById( 'container3D' );
   var parentContainer = button.parent( '.viewContainer' )
+  var n3DRender = Nimbus3DRenderSingle.getInstance(NB3D_docElement);
+    console.log(n3DRender);
   if( parentContainer.hasClass( 'fullScreen' ) ) {
     parentContainer.removeClass( 'fullScreen' );
     $( 'h1' ).show();
@@ -39,6 +42,7 @@ function toggleFullScreen( button ) {
     var canvas = parentContainer.children( 'canvas' );
     canvas.height( resolutionHeight );
     canvas.width( resolutionWidth );
+    n3DRender.resize(resolutionWidth, resolutionHeight);
     
     $('html, body').css( {
       overflow: 'inherit',
@@ -59,6 +63,7 @@ function toggleFullScreen( button ) {
     var parentWfactor = parentContainer.innerWidth() / resolutionWidth;
     
     var canvas = parentContainer.children( 'canvas' );
+    n3DRender.resize($( window ).width(), $( window ).height());
     
     if( parentHfactor < parentWfactor ) {
       canvas.height( parentContainer.innerHeight() );

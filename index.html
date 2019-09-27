@@ -5,13 +5,14 @@
     <link rel="stylesheet" href="style.css" type="text/css">
     
     <script src="jquery-3.4.1.min.js"></script>
-    <script src="nimbus_ui.js"></script>
+    <script type="module" src="nimbus_ui.js"></script>
   </head>
   <body>
     <div id="infoContainer">
       <span class="label">fps: </span><span id="fpsValue" class="value"></span> |
       <span class="label">temp: </span><span id="tempValue" class="value"></span> |
-      <span><a href="/hardware.html">Hardware</a></span>
+      <span><a href="/hardware.html">Hardware</a></span> | 
+      <span><a href="/about.html">About</a></span>
     </div>
     
     
@@ -51,5 +52,6 @@
     <a href="debug.html">Debug</a> -->
   </body>
   <script src="three.min.js"></script>
+  <script src="TrackballControls.js"></script>
   <script type="module" src="app.js"></script>
 </html>

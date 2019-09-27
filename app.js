@@ -1,12 +1,12 @@
 import { NimbusRPC } from './nimbusRPC.js';
 import { NimbusStream } from './nimbusStream.js';
-import { Nimbus3DRender } from './nimbus_3D.js';
+import { Nimbus3DRenderSingle } from './nimbus_3D.js';
 import { render2Dscene, render2DRadialscene } from './nimbus_2D.js';
 
 // # Variable declarations
 
 var NB3D_docElement = document.getElementById( 'container3D' );
-var n3DRender = new Nimbus3DRender(NB3D_docElement);
+var n3DRender = Nimbus3DRenderSingle.getInstance(NB3D_docElement);
 var nimbusRPC = new NimbusRPC(location.host);
 
 var slider = document.getElementById("expoSlider");
