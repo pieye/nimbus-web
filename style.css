@@ -44,7 +44,7 @@ button {
   position: absolute;
   right: 4px;
   width: 38px;
-  z-index: 900;
+  z-index: 950;
 }
 
 button.toggleFullScreen {
@@ -127,6 +127,7 @@ tr:last-child td {
   background-color: rgba( 0, 0, 0, 0.88 );
   display: none;
   padding: 1rem 10%;
+  position: absolute;
   top: 0;
   width: 80%;
   z-index: 1000;
@@ -134,7 +135,7 @@ tr:last-child td {
 
 #logos {
   bottom: 0;
-  margin: 0 40px 20px 0;
+  margin: 0 80px 20px 0;
   position: fixed;
   right: 0;
 }

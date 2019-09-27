@@ -44,6 +44,8 @@ function toggleFullScreen( button ) {
     canvas.width( resolutionWidth );
     n3DRender.resize(resolutionWidth, resolutionHeight);
     
+    button.css( 'position', 'absolute' );
+    
     $('html, body').css( {
       overflow: 'inherit',
       height: 'inherit'
@@ -73,6 +75,8 @@ function toggleFullScreen( button ) {
       canvas.height( resolutionHeight * parentWfactor );
       canvas.width( parentContainer.innerWidth() );
     }
+    
+    button.css( 'position', 'fixed' );
     
     $('html, body').css( {
       overflow: 'hidden',
