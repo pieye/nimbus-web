@@ -1,4 +1,4 @@
-<img src="./img/pieye.png" align="right"
+<img src="./assets/PIEYE_Logo_RGB_POS.png" align="right"
      title="pieye logo" width="184" height="55">
 
 # nimbus-web
