@@ -6,7 +6,7 @@ Welcome to nimbus-web. Nimbus-web are the official web pages of the nimbus 3D we
 
 # Getting Started
 If you downloaded the official rpi image from our nextcloud (https://cloud.pieye.org/index.php/s/c2QSa6P4wBtSJ4K), follow these steps:
-```
+```shell
 cd ~
 mkdir nimbus-web-src
 git clone xxxx nimbus-web-src
