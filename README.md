@@ -4,27 +4,38 @@
 # nimbus-web
 Welcome to nimbus-web. Nimbus-web are the official web pages of the nimbus 3D web interface.
 
+# Prerequisites
+You must install nimbus-server (see https://github.com/pieye/nimbus-userland)
+
 # Getting Started
-If you downloaded the official rpi image from our nextcloud (https://cloud.pieye.org/index.php/s/c2QSa6P4wBtSJ4K), follow these steps:
+
+Install nginx and git
 ```shell
-cd ~
-mkdir nimbus-web-src
-git clone xxxx nimbus-web-src
-ln -s /home/pi/nimbus-web-src/ /var/www/html/
+sudo apt-get install nginx git
 ```
+
+Clone this repository
+```shell
+cd
+mkdir nimbus-web-src
+git clone git@github.com:pieye/nimbus-web.git nimbus-web-src
+```
+
 Edit file /etc/nginx/sites-available/default (with sudo) and change line 41 from
 ```
-root /var/www/html/nimbus-web;
+root /var/www/html;
 ```
 to
 ```
-root /var/www/html/nimbus-web-src;
+root /home/pi/nimbus-web-src;
 ```
 
-On most browsers you have to hit CTRL+R to force the browser to reload the remote webfiles when you change the content of the files.
+restart nginx
+```
+sudo service nginx restart
+```
 
-# Prerequisites
-Download the current image from https://cloud.pieye.org/index.php/s/c2QSa6P4wBtSJ4K which contains nimbus-userland and all necessary linux drivers.
+Open a browser with the IP address of your raspberry pi.
 
 # Contributing
 Contributions are very welcome!
