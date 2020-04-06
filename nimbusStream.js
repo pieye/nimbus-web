@@ -40,15 +40,7 @@ class NimbusStream {
         var headerVersion = new Float32Array(evt.data, 0, 4);
         headerVersion = headerVersion[0];
         
-        if (headerVersion !== 0)
-        {
-            if (this.reportedOnce === false)
-            {
-                alert ("streaming protocol version " + headerVersion + " not supported, update the remote software");
-                this.reportedOnce = true;
-            }
-        }
-        else
+        if (headerVersion === 0 || headerVersion === 1)
         {
             var headerSize = new Float32Array(evt.data, 4, 4);
             headerSize = headerSize[0];
@@ -80,6 +72,14 @@ class NimbusStream {
             }
             
             this.onNewData(header, ampl_arr, dist_arr, conf, x_arr, y_arr, z_arr);
+        }
+        else
+        {
+            if (this.reportedOnce === false)
+            {
+                alert ("streaming protocol version " + headerVersion + " not supported, update the remote software");
+                this.reportedOnce = true;
+            }
         }
     }
 
