@@ -1,4 +1,5 @@
 import { Nimbus3DRenderSingle } from './nimbus_3D.js';
+import { NimbusRPC } from './nimbusRPC.js';
 
 // Variables
 // resolution height and width
@@ -7,6 +8,8 @@ var resolutionWidth = 352;
 
 var animationDT = 666;
 
+var nimbusRPC = new NimbusRPC(location.host);
+
 // On document loaded
 
 $( document ).ready(function() {
@@ -14,12 +17,41 @@ $( document ).ready(function() {
   // connect clicks
   $( 'button.toggleFullScreen' ).click( function() { toggleFullScreen( $( this ) ) });
   $( 'button#globalSettingsButton' ).click( function() { toggleGlobalSettings() });
+  $( 'button#AutoExposureButton' ).click( function() { toggleAutoExposure() });
+  $( 'button#HDRButton' ).click( function() { toggleHDR() });
   $( 'button#showInfoButton' ).click( function() { toggleTopInfos() });
   
 });
 
 function toggleGlobalSettings() {
   $( '#globalSettingsContainer' ).slideToggle( animationDT );
+}
+
+function toggleAutoExposure() {
+  nimbusRPC.getExposureMode().then( ExposureMode => {
+    if(ExposureMode == 2)
+        nimbusRPC.setExposureMode(0);
+    else if(ExposureMode == 3)
+        nimbusRPC.setExposureMode(1);
+    else if(ExposureMode == 0)
+      nimbusRPC.setExposureMode(2);
+    else if(ExposureMode == 1)
+      nimbusRPC.setExposureMode(3);
+
+  })
+}
+
+function toggleHDR() {
+  nimbusRPC.getExposureMode().then( ExposureMode => {
+    if(ExposureMode == 1)
+        nimbusRPC.setExposureMode(0);
+    else if(ExposureMode == 2)
+        nimbusRPC.setExposureMode(3);
+    else if(ExposureMode == 0)
+      nimbusRPC.setExposureMode(1);
+    else if(ExposureMode == 3)
+      nimbusRPC.setExposureMode(2);
+  })
 }
 
 function toggleTopInfos() {

@@ -63,6 +63,14 @@ button#globalSettingsButton {
   background-image: url( '/assets/illumination.png' );
 }
 
+button#AutoExposureButton {
+  background-image: url( '/assets/autoexposure.png' );
+}
+
+button#HDRButton {
+  background-image: url( '/assets/hdr.png' );
+}
+
 canvas {
   height: 288px;
   width: 352px;
@@ -106,7 +114,19 @@ tr:last-child td {
 #globalSettingsButton {
   position: fixed;
   left: 4px;
-  z-index: 1000;
+  z-index: 950;
+}
+
+#AutoExposureButton{
+  position: fixed;
+  left: 88px;
+  z-index: 950;
+}
+
+#HDRButton{
+  position: fixed;
+  left: 130px;
+  z-index: 950;
 }
 
 #globalSettingsContainer {

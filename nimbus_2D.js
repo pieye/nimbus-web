@@ -21,7 +21,7 @@ export function render2Dscene( arr, conf, distMin, distMax) {
     minAmp = 0;
     
   for(var i = 0; i < arr.length; i++) {
-    if (conf[i] === 0)
+    if (conf[i] === 0 || conf[i] === 4) //0 valid_normal, 4 valid_short
     {
       var r = (ampDisp[i]-minAmp)/(maxAmp-minAmp);
       var g = (ampDisp[i]-minAmp)/(maxAmp-minAmp);
@@ -53,7 +53,7 @@ export function render2Dscene( arr, conf, distMin, distMax) {
 
 export function render2DRadialscene( arr, conf, distMin, distMax) {
   for(var i = 0; i < arr.length; i++) {
-    if (conf[i] === 0)
+    if (conf[i] === 0 || conf[i] === 4) //0 valid_normal, 4 valid_short
     {
       var col = getColor(arr[i], distMin, distMax);
       var r = col[0];
@@ -64,6 +64,17 @@ export function render2DRadialscene( arr, conf, distMin, distMax) {
       imageDataRad.data[4*i+2] = b*255;//(z_arr[i])/255;
       imageDataRad.data[4*i+3] = 255;
     }
+    //else if(conf[i] === 4)
+    //{
+    //  var col = getColor(arr[i], distMin, distMax);
+    //  var r = col[0];
+    //  var g = col[1];
+    //  var b = col[2];
+    //  imageDataRad.data[4*i] = r*220;
+    //  imageDataRad.data[4*i+1] = g*220;
+    //  imageDataRad.data[4*i+2] = b*220;
+    //  imageDataRad.data[4*i+3] = 220;
+    //}
     else if (conf[i] == 2)
     {
       imageDataRad.data[4*i] = 255;

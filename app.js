@@ -11,7 +11,12 @@ var nimbusRPC = new NimbusRPC(location.host);
 
 var slider = document.getElementById("expoSlider");
 slider.onchange = function() {
-    nimbusRPC.setExposure(this.value);
+    nimbusRPC.getExposureMode().then( ExposureMode => {
+        if(ExposureMode == 2 || ExposureMode == 3)
+            nimbusRPC.setAmplitude(this.value);
+        else
+            nimbusRPC.setExposure(this.value);
+      })
 }
 
 var fpsValueSpan = document.getElementById( 'fpsValue' );
