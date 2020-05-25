@@ -85,21 +85,28 @@ class NimbusRPC {
         var self = this;
         var p1 = new Promise(
             function(resolve, reject) {
-                var i;
-                var exp = {"pause": 0, "exposure": parseInt(exposure)};
-                var args = []
-                for (i = 0; i < self.numBuffers; i++) {
-                    args[i] = exp;
-                }
+                self.getExposureMode().then( ExposureMode => {
+                    var i;
+                    var exp = {"pause": 0, "exposure": parseInt(exposure)};
+                    var args = []
+                    for (i = 0; i < self.numBuffers; i++) {
+                        args[i] = exp;
+                    }
+                    if(ExposureMode == 1 || ExposureMode == 3){
+                        for (i = self.numBuffers; i < 9; i++) {
+                            args[i] = exp*0.05; //hdr factor
+                        } 
+                    }
 
-                self.setJSONParameter( "nimbusRaw", 0, args).then(
-                    function(response) {
-                       resolve();
-                    },
-                    function(status) {
-                        reject(status);
-                    });
+                    self.setJSONParameter( "nimbusRaw", 0, args).then(
+                        function(response) {
+                        resolve();
+                        },
+                        function(status) {
+                            reject(status);
+                        });
             });
+        });
         return p1;
     }
 
@@ -110,6 +117,66 @@ class NimbusRPC {
                 self.getJSONParameter( "nimbusRaw", 0, null).then(
                     function(response) {
                         resolve(response["result"]);
+                    },
+                    function(status) {
+                        reject(status);
+                    });
+            });
+        return p1;
+    }
+
+    getAmplitude() {
+        var self = this;
+        var p1 = new Promise(
+            function(resolve, reject) {
+                self.getJSONParameter( "AutoExposure", 2, null).then(
+                    function(response) {
+                        resolve(response["result"]);
+                    },
+                    function(status) {
+                        reject(status);
+                    });
+            });
+        return p1;
+    }
+
+    setAmplitude(exposure) {
+        var self = this;
+        var p1 = new Promise(
+            function(resolve, reject) {
+                self.setJSONParameter( "AutoExposure", 2, parseInt(exposure)/25).then(
+                    function(response) {
+                        resolve();
+                    },
+                    function(status) {
+                        reject(status);
+                    });
+            });
+        return p1;
+    }
+
+    getExposureMode() {
+        var self = this;
+        var p1 = new Promise(
+            function(resolve, reject) {
+                self.getJSONParameter( "AutoExposure", 1, null).then(
+                    function(response) {
+                        resolve(response["result"]);
+                    },
+                    function(status) {
+                        reject(status);
+                    });
+            });
+        return p1;
+    }
+
+    setExposureMode(exposuremode) {
+        var self = this;
+        var p1 = new Promise(
+            function(resolve, reject) {
+                self.setJSONParameter( "AutoExposure", 1, parseInt(exposuremode)).then(
+                    function(response) {
+                        resolve();
                     },
                     function(status) {
                         reject(status);

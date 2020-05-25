@@ -40,7 +40,7 @@ class NimbusStream {
         var headerVersion = new Float32Array(evt.data, 0, 4);
         headerVersion = headerVersion[0];
         
-        if (headerVersion === 0 || headerVersion === 1)
+        if (headerVersion === 0 || headerVersion === 1 || headerVersion === 2)
         {
             var headerSize = new Float32Array(evt.data, 4, 4);
             headerSize = headerSize[0];
