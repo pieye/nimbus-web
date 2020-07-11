@@ -9,8 +9,13 @@ You must install nimbus-server (see https://github.com/pieye/nimbus-userland)
 Check if nimbus-server is running:
 ```sudo systemctl status nimbusServer.service ```
 You can start it with:
-```sudo systemctl start nimbusServer.service ``` or stop it with: 
-```sudo systemctl stop nimbusServer.service ```
+```shell
+sudo systemctl start nimbusServer.service 
+``` 
+or stop it with: 
+```shell
+sudo systemctl stop nimbusServer.service 
+```
 
 # Getting Started
 
