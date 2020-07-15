@@ -23,6 +23,29 @@ $( document ).ready(function() {
   
 });
 
+var switchStatus = false;
+$("#HDRSwitch").on('change', function() {
+  if ($(this).is(':checked')) {
+      switchStatus = $(this).is(':checked');
+      alert(switchStatus);// To verify
+  }
+  else {
+     switchStatus = $(this).is(':checked');
+     alert(switchStatus);// To verify
+  }
+});
+
+$("#AutoExposureSwitch").on('change', function() {
+  if ($(this).is(':checked')) {
+      switchStatus = $(this).is(':checked');
+      alert(switchStatus);// To verify
+  }
+  else {
+     switchStatus = $(this).is(':checked');
+     alert(switchStatus);// To verify
+  }
+});
+
 function toggleGlobalSettings() {
   $( '#globalSettingsContainer' ).slideToggle( animationDT );
 }

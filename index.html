@@ -32,8 +32,6 @@
     </div>
 
     <button id="globalSettingsButton"></button>
-    <button id="AutoExposureButton"></button>
-    <button id="HDRButton"></button>
     <button id="showInfoButton"></button>
     
     <div id="logos" >
@@ -46,6 +44,27 @@
         <tr>
           <td>Exposure</td>
           <td><input type="range" min="0" max="65535" value="50" class="slider" id="expoSlider"></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td>
+            <div class="onoffswitch">
+              <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="HDRSwitch" tabindex="0">
+              <label class="onoffswitch-label" for="myonoffswitch">
+                  <span class="onoffswitch-inner"></span>
+                  <span class="onoffswitch-switch"></span>
+              </label>
+          </div>
+          
+        </td>
+        <td>
+          <label class="switch">
+          <input type="checkbox" id="AutoExosureSwitch">
+          <span class="slider"></span>
+          </label>
+        </td>
         </tr>
       </table>
     </div>
