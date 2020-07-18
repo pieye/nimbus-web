@@ -81,7 +81,7 @@ class NimbusRPC {
         return p1;
     }
 
-    setExposure(exposure) {
+    setExposure(exposure, hdr) {
         var self = this;
         var p1 = new Promise(
             function(resolve, reject) {
@@ -92,9 +92,10 @@ class NimbusRPC {
                     for (i = 0; i < self.numBuffers; i++) {
                         args[i] = exp;
                     }
-                    if(ExposureMode == 1 || ExposureMode == 3){
+                    if(ExposureMode == 1){
+                        var exp_hdr = {"pause": 0, "exposure": parseInt(exposure*hdr)};//hdr factor
                         for (i = self.numBuffers; i < 9; i++) {
-                            args[i] = exp*0.05; //hdr factor
+                            args[i] = exp_hdr
                         } 
                     }
 
@@ -175,6 +176,21 @@ class NimbusRPC {
         var p1 = new Promise(
             function(resolve, reject) {
                 self.setJSONParameter( "AutoExposure", 1, parseInt(exposuremode)).then(
+                    function(response) {
+                        resolve();
+                    },
+                    function(status) {
+                        reject(status);
+                    });
+            });
+        return p1;
+    }
+
+    setHdrFactor(factor) {
+        var self = this;
+        var p1 = new Promise(
+            function(resolve, reject) {
+                self.setJSONParameter( "AutoExposure", 3, parseFloat(factor)).then(
                     function(response) {
                         resolve();
                     },
