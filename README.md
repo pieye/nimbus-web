@@ -6,6 +6,16 @@ Welcome to nimbus-web. Nimbus-web are the official web pages of the nimbus 3D we
 
 # Prerequisites
 You must install nimbus-server (see https://github.com/pieye/nimbus-userland)
+Check if nimbus-server is running:
+```sudo systemctl status nimbusServer.service ```
+You can start it with:
+```shell
+sudo systemctl start nimbusServer.service 
+``` 
+or stop it with: 
+```shell
+sudo systemctl stop nimbusServer.service 
+```
 
 # Getting Started
 
@@ -16,9 +26,7 @@ sudo apt-get install nginx git
 
 Clone this repository
 ```shell
-cd
-mkdir nimbus-web-src
-git clone git@github.com:pieye/nimbus-web.git nimbus-web-src
+git clone https://github.com/pieye/nimbus-web.git
 ```
 
 Edit file /etc/nginx/sites-available/default (with sudo) and change line 41 from
@@ -27,7 +35,7 @@ root /var/www/html;
 ```
 to
 ```
-root /home/pi/nimbus-web-src;
+root /home/pi/nimbus-web;
 ```
 
 restart nginx

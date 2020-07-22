@@ -11,7 +11,6 @@ var animationDT = 666;
 var nimbusRPC = new NimbusRPC(location.host);
 
 // On document loaded
-
 $( document ).ready(function() {
   
   // connect clicks
@@ -23,35 +22,81 @@ $( document ).ready(function() {
   
 });
 
-function toggleGlobalSettings() {
-  $( '#globalSettingsContainer' ).slideToggle( animationDT );
-}
-
-function toggleAutoExposure() {
+var switchStatus = false;
+$("#HDRSwitch").on('change', function() {
   nimbusRPC.getExposureMode().then( ExposureMode => {
-    if(ExposureMode == 2)
-        nimbusRPC.setExposureMode(0);
-    else if(ExposureMode == 3)
-        nimbusRPC.setExposureMode(1);
-    else if(ExposureMode == 0)
+    if(ExposureMode == 1){
+      document.getElementById("hdrSlider").disabled = true
+      nimbusRPC.setExposureMode(0);
+      HDRSwitch.checked=0
+    }
+    else if(ExposureMode == 3){
+      document.getElementById("hdrSlider").disabled = true
       nimbusRPC.setExposureMode(2);
-    else if(ExposureMode == 1)
-      nimbusRPC.setExposureMode(3);
-
-  })
-}
-
-function toggleHDR() {
-  nimbusRPC.getExposureMode().then( ExposureMode => {
-    if(ExposureMode == 1)
-        nimbusRPC.setExposureMode(0);
-    else if(ExposureMode == 2)
-        nimbusRPC.setExposureMode(3);
-    else if(ExposureMode == 0)
+      HDRSwitch.checked=0
+    }
+    else if(ExposureMode == 0){
       nimbusRPC.setExposureMode(1);
-    else if(ExposureMode == 3)
-      nimbusRPC.setExposureMode(2);
+      document.getElementById("hdrSlider").disabled = false
+      HDRSwitch.checked=1
+    }
+    else if(ExposureMode == 2){
+      nimbusRPC.setExposureMode(3);
+      document.getElementById("hdrSlider").disabled = false
+      HDRSwitch.checked=1
+    }
   })
+});
+
+$("#AutoExposureSwitch").on('change', function() {
+  nimbusRPC.getExposureMode().then( ExposureMode => {
+    if(ExposureMode == 2){
+      nimbusRPC.setExposureMode(0);
+      AutoExposureSwitch.checked=0
+    }
+    else if(ExposureMode == 3){
+      nimbusRPC.setExposureMode(1);
+      AutoExposureSwitch.checked=0
+    }
+    else if(ExposureMode == 0){
+      nimbusRPC.setExposureMode(2);
+      AutoExposureSwitch.checked=1
+    }
+    else if(ExposureMode == 1){
+      nimbusRPC.setExposureMode(3);
+      AutoExposureSwitch.checked=1
+    }
+  })
+});
+
+function checkExposureMode(){
+  nimbusRPC.getExposureMode().then( ExposureMode => {
+    if(ExposureMode == 0){
+      AutoExposureSwitch.checked=0
+      document.getElementById("hdrSlider").disabled = true
+      HDRSwitch.checked=0
+    }
+    else if(ExposureMode == 1){
+      AutoExposureSwitch.checked=0
+      document.getElementById("hdrSlider").disabled = false
+      HDRSwitch.checked=1
+    }
+    else if(ExposureMode == 2){
+      AutoExposureSwitch.checked=1
+      document.getElementById("hdrSlider").disabled = true
+      HDRSwitch.checked=0
+    }
+    else if(ExposureMode == 3){
+      AutoExposureSwitch.checked=1
+      document.getElementById("hdrSlider").disabled = false
+      HDRSwitch.checked=1
+    }
+  })  
+}
+
+function toggleGlobalSettings() {
+  checkExposureMode()
+  $( '#globalSettingsContainer' ).slideToggle( animationDT );
 }
 
 function toggleTopInfos() {

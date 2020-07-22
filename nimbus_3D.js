@@ -52,7 +52,7 @@ class Nimbus3DRender {
 
             var colorVal = dist_arr[index];
             var color = getColor(colorVal, distMin, distMax);
-            if(conf[index] == 0)
+            if(conf[index] == 0 || conf[index] == 4)
             {
                 positions[posIndex++] = x_arr[index];
                 positions[posIndex++] = y_arr[index];

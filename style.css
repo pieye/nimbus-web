@@ -35,7 +35,7 @@ body {
 }
 
 button {
-  background-color: rgba( 34, 34, 34, 0.5 );
+  background-color: #22222280;
   background-position: center;
   background-size: contain;
   border: none;
@@ -118,13 +118,13 @@ tr:last-child td {
 }
 
 #AutoExposureButton{
-  position: fixed;
+  position: absolute;
   left: 88px;
   z-index: 950;
 }
 
 #HDRButton{
-  position: fixed;
+  position: absolute;
   left: 130px;
   z-index: 950;
 }
@@ -184,4 +184,139 @@ tr:last-child td {
     flex-direction: column;
     width: 100%;
   }
+}
+
+
+/* HDR Switch */
+/*  */
+.hdr {
+  position: relative; width: 82px;
+  -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.hdr-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.hdr-label {
+  display: block; overflow: hidden; cursor: pointer;
+  border: 2px solid #999999; border-radius: 0px;
+}
+.hdr-inner {
+  display: block; width: 200%; margin-left: -100%;
+  transition: margin 0.1s ease-in 0s;
+}
+.hdr-inner:before, .hdr-inner:after {
+  display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 26px;
+  font-size: 10px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.hdr-inner:before {
+  content: "HDR ON";
+  padding-left: 15px;
+  text-align: left;
+  background-color: #00FF00; color: #333333; //32AFD7
+}
+.hdr-inner:after {
+  content: "HDR OFF";
+  padding-right: 10px;
+  background-color: #CCCCCC; color: #333333;
+  text-align: right;
+}
+.hdr-switch {
+  display: block; width: 15px; margin: 0px;
+  background: #828282;
+  position: absolute; top: 0; bottom: 0;
+  right: 67px;
+  transition: all 0.1s ease-in 0s; 
+}
+.hdr-checkbox:checked + .hdr-label .hdr-inner {
+  margin-left: 0;
+}
+.hdr-checkbox:checked + .hdr-label .hdr-switch {
+  right: 0px; 
+}
+
+
+
+
+/* Auto Exposure Switch */
+/*  */
+.auto {
+  position: relative; width: 82px;
+  -webkit-user-select:none; -moz-user-select:none; -ms-user-select: none;
+}
+.auto-checkbox {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.auto-label {
+  display: block; overflow: hidden; cursor: pointer;
+  border: 2px solid #999999; border-radius: 0px;
+}
+.auto-inner {
+  display: block; width: 200%; margin-left: -100%;
+  transition: margin 0.1s ease-in 0s;
+}
+.auto-inner:before, .auto-inner:after {
+  display: block; float: left; width: 50%; height: 30px; padding: 0; line-height: 26px;
+  font-size: 10px; color: white; font-family: Trebuchet, Arial, sans-serif; font-weight: bold;
+  box-sizing: border-box;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+.auto-inner:before {
+  content: "Auto ON";
+  padding-left: 15px;
+  text-align: left;
+  background-color: #00FF00; color: #333333;
+}
+.auto-inner:after {
+  content: "Auto OFF";
+  padding-right: 10px;
+  background-color: #CCCCCC; color: #333333;
+  text-align: right;
+}
+.auto-switch {
+  display: block; width: 15px; margin: 0px;
+  background: #828282;
+  position: absolute; top: 0; bottom: 0;
+  right: 67px;
+  transition: all 0.1s ease-in 0s; 
+}
+.auto-checkbox:checked + .auto-label .auto-inner {
+  margin-left: 0;
+}
+.auto-checkbox:checked + .auto-label .auto-switch {
+  right: 0px; 
+}
+
+
+
+/* Table options in exposureContainer */
+/*  */
+table.exposureContainer {
+  margin: 3rem auto;
+  width: 100%;
+}
+
+table.exposureContainer td {
+  border-bottom: 0px solid #377BB5;
+  padding: 0.8rem 0.3rem;
+}
+
+table.exposureContainer td:first-child {
+  text-align: left;
+  width: 10%;
+}
+
+table.exposureContainer textarea {
+  color: #333;
+}
+
+table.exposureContainer tr:last-child td {
+  border-bottom: none;  
 }
